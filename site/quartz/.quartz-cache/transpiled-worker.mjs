@@ -5853,422 +5853,51 @@ var ConditionalRender_default = /* @__PURE__ */ __name(((config2) => {
   return ConditionalRender;
 }), "default");
 
-// quartz/components/ChatWidget.tsx
-import { jsx as jsx37 } from "preact/jsx-runtime";
-var ChatWidget_default = /* @__PURE__ */ __name(((opts) => {
-  const ChatWidget = /* @__PURE__ */ __name(({ displayClass }) => {
-    const wiki = opts.wiki || "scott_adams";
-    const apiUrl = opts.apiUrl || "http://localhost:8081";
-    const widgetScript = `
-(function() {
-  const WIKI = "${wiki}";
-  const API_URL = "${apiUrl}";
-
-  const THINKING_PHRASES = [
-    "Consulting the archives...",
-    "Searching transcripts...",
-    "Cross-referencing sources...",
-    "Pondering the question...",
-    "Evaluating the evidence...",
-    "Synthesizing insights...",
-  ];
-
-  const styles = \`
-    #wiki-chat-widget {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-    #wiki-chat-toggle {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--secondary, #2563eb);
-      color: white;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s;
-    }
-    #wiki-chat-toggle:hover { transform: scale(1.05); }
-    #wiki-chat-toggle svg { width: 26px; height: 26px; }
-    #wiki-chat-panel {
-      display: none;
-      position: absolute;
-      bottom: 65px;
-      right: 0;
-      width: 360px;
-      max-height: 480px;
-      background: var(--light, white);
-      border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-      overflow: hidden;
-      flex-direction: column;
-    }
-    #wiki-chat-panel.open { display: flex; }
-    #wiki-chat-header {
-      background: var(--secondary, #2563eb);
-      color: white;
-      padding: 14px 16px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #wiki-chat-close {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 20px;
-    }
-    #wiki-chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      max-height: 280px;
-      background: var(--lightgray, #f9fafb);
-    }
-    .wiki-chat-message {
-      margin-bottom: 10px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      max-width: 90%;
-      line-height: 1.5;
-      font-size: 13px;
-    }
-    .wiki-chat-message.user {
-      background: var(--secondary, #2563eb);
-      color: white;
-      margin-left: auto;
-    }
-    .wiki-chat-message.bot {
-      background: var(--light, white);
-      border: 1px solid var(--gray, #e5e7eb);
-      color: var(--dark, #333);
-    }
-    .wiki-chat-message.bot p { margin: 0 0 8px 0; }
-    .wiki-chat-message.bot p:last-child { margin-bottom: 0; }
-    .wiki-chat-thinking { color: var(--gray, #6b7280); font-style: italic; }
-    #wiki-chat-input-area {
-      padding: 12px;
-      border-top: 1px solid var(--gray, #e5e7eb);
-      background: var(--light, white);
-    }
-    #wiki-chat-email-gate { text-align: center; padding: 16px; }
-    #wiki-chat-email-gate input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--gray, #d1d5db);
-      border-radius: 6px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    #wiki-chat-email-gate button, #wiki-chat-send {
-      padding: 10px 16px;
-      background: var(--secondary, #2563eb);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    #wiki-chat-email-gate button:disabled, #wiki-chat-send:disabled {
-      background: var(--gray, #9ca3af);
-      cursor: not-allowed;
-    }
-    #wiki-chat-form { display: flex; gap: 8px; }
-    #wiki-chat-input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid var(--gray, #d1d5db);
-      border-radius: 6px;
-      font-size: 14px;
-    }
-  \`;
-
-  function createWidget() {
-    const widget = document.createElement('div');
-    widget.id = 'wiki-chat-widget';
-    widget.innerHTML = \`
-      <style>\${styles}</style>
-      <button id="wiki-chat-toggle" aria-label="Open chat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </button>
-      <div id="wiki-chat-panel">
-        <div id="wiki-chat-header">
-          <span>Ask the Archive</span>
-          <button id="wiki-chat-close">&times;</button>
-        </div>
-        <div id="wiki-chat-messages"></div>
-        <div id="wiki-chat-input-area">
-          <div id="wiki-chat-email-gate">
-            <p style="margin-bottom:12px;color:var(--dark,#374151);">Enter your email to start chatting</p>
-            <input type="email" id="wiki-chat-email" placeholder="you@example.com" />
-            <button id="wiki-chat-email-submit" style="width:100%;" disabled>Continue</button>
-          </div>
-          <form id="wiki-chat-form" style="display:none;">
-            <input type="text" id="wiki-chat-input" placeholder="Ask a question..." />
-            <button type="submit" id="wiki-chat-send">Send</button>
-          </form>
-        </div>
-      </div>
-    \`;
-    document.body.appendChild(widget);
-    initWidget();
-  }
-
-  function initWidget() {
-    const toggle = document.getElementById('wiki-chat-toggle');
-    const panel = document.getElementById('wiki-chat-panel');
-    const closeBtn = document.getElementById('wiki-chat-close');
-    const emailGate = document.getElementById('wiki-chat-email-gate');
-    const emailInput = document.getElementById('wiki-chat-email');
-    const emailSubmit = document.getElementById('wiki-chat-email-submit');
-    const chatForm = document.getElementById('wiki-chat-form');
-    const chatInput = document.getElementById('wiki-chat-input');
-    const messages = document.getElementById('wiki-chat-messages');
-
-    let userEmail = localStorage.getItem('wiki_chat_email');
-    let isLoading = false;
-
-    if (userEmail) {
-      emailGate.style.display = 'none';
-      chatForm.style.display = 'flex';
-    }
-
-    toggle.addEventListener('click', () => {
-      panel.classList.toggle('open');
-      if (panel.classList.contains('open')) {
-        (userEmail ? chatInput : emailInput).focus();
-      }
-    });
-
-    closeBtn.addEventListener('click', () => panel.classList.remove('open'));
-
-    emailInput.addEventListener('input', () => {
-      emailSubmit.disabled = !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(emailInput.value);
-    });
-
-    emailSubmit.addEventListener('click', async () => {
-      userEmail = emailInput.value.toLowerCase();
-      localStorage.setItem('wiki_chat_email', userEmail);
-      try {
-        await fetch(API_URL + '/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userEmail }),
-        });
-      } catch (e) {}
-      emailGate.style.display = 'none';
-      chatForm.style.display = 'flex';
-      chatInput.focus();
-      addMessage('bot', "Hi! Ask me anything about the archive.");
-    });
-
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const query = chatInput.value.trim();
-      if (!query || isLoading) return;
-      addMessage('user', query);
-      chatInput.value = '';
-      isLoading = true;
-      let phraseIdx = 0;
-      const thinkingMsg = addMessage('bot', THINKING_PHRASES[0], 'wiki-chat-thinking');
-      const interval = setInterval(() => {
-        phraseIdx = (phraseIdx + 1) % THINKING_PHRASES.length;
-        thinkingMsg.textContent = THINKING_PHRASES[phraseIdx];
-      }, 2000);
-      try {
-        const res = await fetch(API_URL + '/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-User-Email': userEmail },
-          body: JSON.stringify({ wiki: WIKI, query, limit: 8 }),
-        });
-        const data = await res.json();
-        thinkingMsg.remove();
-        if (res.ok) {
-          let html = formatMd(data.answer);
-          if (data.sources?.length) {
-            html += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--gray,#e5e7eb);font-size:11px;color:var(--gray,#6b7280);"><strong>Sources:</strong> ' +
-              data.sources.slice(0,3).map(s => s.title).join(', ') + '</div>';
-          }
-          addMessage('bot', html, null, true);
-        } else {
-          addMessage('bot', 'Error: ' + (data.detail || 'Request failed'));
-        }
-      } catch (err) {
-        thinkingMsg.remove();
-        addMessage('bot', 'Error: ' + err.message);
-      } finally {
-        clearInterval(interval);
-        isLoading = false;
-      }
-    });
-
-    function addMessage(type, content, extraClass, isHtml) {
-      const msg = document.createElement('div');
-      msg.className = 'wiki-chat-message ' + type + (extraClass ? ' ' + extraClass : '');
-      if (isHtml) msg.innerHTML = content;
-      else msg.textContent = content;
-      messages.appendChild(msg);
-      messages.scrollTop = messages.scrollHeight;
-      return msg;
-    }
-
-    function formatMd(text) {
-      return text
-        .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')
-        .replace(/\\*(.+?)\\*/g, '<em>$1</em>')
-        .replace(/\\n\\n/g, '</p><p>')
-        .replace(/\\n/g, '<br>')
-        .replace(/^/, '<p>').replace(/$/, '</p>');
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createWidget);
-  } else {
-    createWidget();
-  }
-})();
-`;
-    return /* @__PURE__ */ jsx37("script", { dangerouslySetInnerHTML: { __html: widgetScript } });
-  }, "ChatWidget");
-  return ChatWidget;
-}), "default");
-
-// quartz/components/ChatBanner.tsx
-import { Fragment as Fragment6, jsx as jsx38, jsxs as jsxs21 } from "preact/jsx-runtime";
-var ChatBanner_default = /* @__PURE__ */ __name(((opts) => {
-  const ChatBanner = /* @__PURE__ */ __name(({ displayClass }) => {
-    const label = opts?.label || "Ask the Archive";
-    const description = opts?.description || "Chat with an AI that's read every episode";
-    const bannerScript = `
-(function() {
-  const banner = document.getElementById('chat-banner');
-  if (!banner) return;
-
-  banner.addEventListener('click', function() {
-    const toggle = document.getElementById('wiki-chat-toggle');
-    const panel = document.getElementById('wiki-chat-panel');
-    if (toggle && panel) {
-      panel.classList.add('open');
-      const input = document.getElementById('wiki-chat-input') || document.getElementById('wiki-chat-email');
-      if (input) input.focus();
-    }
-  });
-})();
-`;
-    return /* @__PURE__ */ jsxs21(Fragment6, { children: [
-      /* @__PURE__ */ jsx38("div", { id: "chat-banner", class: `chat-banner ${displayClass ?? ""}`, children: /* @__PURE__ */ jsxs21("div", { class: "chat-banner-inner", children: [
-        /* @__PURE__ */ jsx38("div", { class: "chat-banner-icon", children: /* @__PURE__ */ jsx38("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", children: /* @__PURE__ */ jsx38("path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }) }) }),
-        /* @__PURE__ */ jsxs21("div", { class: "chat-banner-text", children: [
-          /* @__PURE__ */ jsx38("span", { class: "chat-banner-label", children: label }),
-          /* @__PURE__ */ jsx38("span", { class: "chat-banner-desc", children: description })
-        ] }),
-        /* @__PURE__ */ jsx38("div", { class: "chat-banner-arrow", children: /* @__PURE__ */ jsx38("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", children: /* @__PURE__ */ jsx38("polyline", { points: "9 18 15 12 9 6" }) }) })
-      ] }) }),
-      /* @__PURE__ */ jsx38("script", { dangerouslySetInnerHTML: { __html: bannerScript } })
-    ] });
-  }, "ChatBanner");
-  ChatBanner.css = `
-    .chat-banner {
-      margin: 0 0 1rem 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .chat-banner:hover {
-      transform: translateY(-1px);
-    }
-    .chat-banner-inner {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: var(--secondary);
-      color: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
-    .chat-banner:hover .chat-banner-inner {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-    }
-    .chat-banner-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      flex-shrink: 0;
-    }
-    .chat-banner-text {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-width: 0;
-    }
-    .chat-banner-label {
-      font-weight: 700;
-      font-size: 0.95rem;
-      line-height: 1.3;
-    }
-    .chat-banner-desc {
-      font-size: 0.8rem;
-      opacity: 0.85;
-      line-height: 1.3;
-    }
-    .chat-banner-arrow {
-      flex-shrink: 0;
-      opacity: 0.7;
-      transition: transform 0.2s;
-    }
-    .chat-banner:hover .chat-banner-arrow {
-      transform: translateX(2px);
-      opacity: 1;
-    }
-  `;
-  return ChatBanner;
-}), "default");
+// quartz/components/PluginBanner.tsx
+import { jsx as jsx37, jsxs as jsxs21 } from "preact/jsx-runtime";
 
 // quartz.layout.ts
 var sharedPageComponents = {
   head: Head_default(),
   header: [],
-  afterBody: [
-    ChatWidget_default({
-      wiki: "scott_adams",
-      apiUrl: "https://api-production-4224.up.railway.app"
-    })
-  ],
+  afterBody: [],
   footer: Footer_default({
     links: {
-      "About Scott Adams": "/about",
-      "GitHub": "https://github.com"
-    }
+      "My First Million Podcast": "https://www.mfmpod.com"
+    },
+    subscribeLinks: [
+      {
+        label: "YouTube",
+        url: "https://www.youtube.com/@MyFirstMillionPod",
+        icon: "youtube"
+      },
+      {
+        label: "Apple Podcasts",
+        url: "https://podcasts.apple.com/us/podcast/my-first-million/id1469759170",
+        icon: "apple"
+      },
+      {
+        label: "Spotify",
+        url: "https://open.spotify.com/show/3mliji9352UAk3XnWElnDV",
+        icon: "spotify"
+      }
+    ]
   })
 };
 var defaultContentPageLayout = {
   beforeBody: [
-    ChatBanner_default({
-      label: "Ask the Archive",
-      description: "Chat with an AI that's read all 1,151 episodes"
-    }),
     ConditionalRender_default({
       component: Breadcrumbs_default(),
       condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
     }),
-    ArticleTitle_default(),
-    ContentMeta_default(),
+    ConditionalRender_default({
+      component: ArticleTitle_default(),
+      condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
+    }),
+    ConditionalRender_default({
+      component: ContentMeta_default(),
+      condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
+    }),
     TagList_default()
   ],
   left: [
@@ -6285,12 +5914,12 @@ var defaultContentPageLayout = {
       ]
     }),
     Explorer_default({
-      folderDefaultState: "open",
+      folderDefaultState: "collapsed",
       filterFn: /* @__PURE__ */ __name((node) => {
-        return node.slugSegment !== "tags" && node.slugSegment !== "episodes";
+        return node.slugSegment !== "tags";
       }, "filterFn"),
       sortFn: /* @__PURE__ */ __name((a, b) => {
-        const order = ["domains", "frameworks", "cases", "people"];
+        const order = ["people", "articles", "skills", "episodes"];
         const aIdx = order.indexOf(a.slugSegment ?? "");
         const bIdx = order.indexOf(b.slugSegment ?? "");
         if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
@@ -6301,9 +5930,18 @@ var defaultContentPageLayout = {
     })
   ],
   right: [
-    Graph_default(),
-    DesktopOnly_default(TableOfContents_default()),
-    Backlinks_default()
+    ConditionalRender_default({
+      component: Graph_default(),
+      condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
+    }),
+    ConditionalRender_default({
+      component: DesktopOnly_default(TableOfContents_default()),
+      condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
+    }),
+    ConditionalRender_default({
+      component: Backlinks_default(),
+      condition: /* @__PURE__ */ __name((page) => page.fileData.slug !== "index", "condition")
+    })
   ]
 };
 var defaultListPageLayout = {
@@ -6321,12 +5959,12 @@ var defaultListPageLayout = {
       ]
     }),
     Explorer_default({
-      folderDefaultState: "open",
+      folderDefaultState: "collapsed",
       filterFn: /* @__PURE__ */ __name((node) => {
-        return node.slugSegment !== "tags" && node.slugSegment !== "episodes";
+        return node.slugSegment !== "tags";
       }, "filterFn"),
       sortFn: /* @__PURE__ */ __name((a, b) => {
-        const order = ["domains", "frameworks", "cases", "people"];
+        const order = ["people", "articles", "skills", "episodes"];
         const aIdx = order.indexOf(a.slugSegment ?? "");
         const bIdx = order.indexOf(b.slugSegment ?? "");
         if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
@@ -6676,7 +6314,7 @@ var FolderPage = /* @__PURE__ */ __name((userOpts) => {
 
 // quartz/plugins/emitters/contentIndex.tsx
 import { toHtml as toHtml2 } from "hast-util-to-html";
-import { jsx as jsx39 } from "preact/jsx-runtime";
+import { jsx as jsx38 } from "preact/jsx-runtime";
 var defaultOptions18 = {
   enableSiteMap: true,
   enableRSS: true,
@@ -6787,7 +6425,7 @@ var ContentIndex = /* @__PURE__ */ __name((opts) => {
       if (opts?.enableRSS) {
         return {
           additionalHead: [
-            /* @__PURE__ */ jsx39(
+            /* @__PURE__ */ jsx38(
               "link",
               {
                 rel: "alternate",
@@ -6862,7 +6500,7 @@ async function glob(pattern, cwd, ignorePatterns) {
   const fps = (await globby(pattern, {
     cwd,
     ignore: ignorePatterns,
-    gitignore: true
+    gitignore: false
   })).map(toPosixPath);
   return fps;
 }
@@ -7330,7 +6968,7 @@ var NotFoundPage = /* @__PURE__ */ __name(() => {
 // quartz.config.ts
 var config = {
   configuration: {
-    pageTitle: "Scott Adams Wiki",
+    pageTitle: "My First Million Wiki",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -7338,39 +6976,39 @@ var config = {
       provider: "plausible"
     },
     locale: "en-US",
-    baseUrl: "scottadams.wiki",
+    baseUrl: "myfirstmillion.wiki",
     ignorePatterns: ["private", "templates", ".obsidian", "_templates"],
     defaultDateType: "created",
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Inter",
+        header: "Newsreader",
         body: "Inter",
         code: "JetBrains Mono"
       },
       colors: {
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688"
+          light: "#f8f5f0",
+          lightgray: "#e8e4de",
+          gray: "#a8a29e",
+          darkgray: "#3d3929",
+          dark: "#1c1917",
+          secondary: "#006948",
+          tertiary: "#17684e",
+          highlight: "rgba(0, 105, 72, 0.12)",
+          textHighlight: "#fef08a88"
         },
         darkMode: {
-          light: "#161618",
-          lightgray: "#393639",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688"
+          light: "#1a1a1e",
+          lightgray: "#2e2e34",
+          gray: "#71717a",
+          darkgray: "#d4d4d8",
+          dark: "#f5f2ed",
+          secondary: "#34d399",
+          tertiary: "#6ee7b7",
+          highlight: "rgba(52, 211, 153, 0.12)",
+          textHighlight: "#fef08a88"
         }
       }
     }

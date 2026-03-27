@@ -23,8 +23,7 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
-import ChatWidget from "./ChatWidget"
-import ChatBanner from "./ChatBanner"
+import PluginBanner from "./PluginBanner"
 
 export {
   ArticleTitle,
@@ -52,6 +51,5 @@ export {
   Comments,
   Flex,
   ConditionalRender,
-  ChatWidget,
-  ChatBanner,
+  PluginBanner,
 }
