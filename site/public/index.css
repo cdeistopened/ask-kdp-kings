@@ -1,0 +1,303 @@
+/* ══════════════════════════════════════════════════════════════
+   CIA SHARED WIKI THEME
+   Applied to all creator wiki sites via _shared-theme/
+   Based on design-consultation-preview-1774569418.html
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── GOOGLE FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── CSS VARIABLES ── */
+:root {
+  --cia-navy: #0a1628;
+  --cia-paper: #f8f8ec;
+  --cia-gold: #c9a961;
+  --cia-gold-hover: #d4b872;
+  --cia-electric: #567cff;
+  --cia-ink: #1e1e1e;
+  --cia-mist: #e8e4dc;
+  --cia-mist-dark: #d4d0c7;
+}
+
+/* ── GLOBAL TYPOGRAPHY OVERRIDES ── */
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', var(--headerFont), sans-serif !important;
+  letter-spacing: -0.02em;
+}
+
+/* ── PAGE TITLE (left sidebar) ── */
+.page-title {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* ── CIA HEADER BAR ── */
+header {
+  border-bottom: 2px solid var(--cia-mist);
+}
+
+/* ── CIA LOGO IN SIDEBAR ── */
+.page-title::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: url('/images/cia-owl.png') center/contain no-repeat;
+  margin-bottom: 8px;
+  border-radius: 50%;
+}
+
+/* ── EXPLORER SIDEBAR ── */
+.explorer {
+  font-family: 'Plus Jakarta Sans', var(--bodyFont), sans-serif;
+}
+
+.explorer .folder-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+/* ── SECTION LABELS ── */
+.section-label,
+.content-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── WINDOW CARD (folder page items) ── */
+.section-li,
+.folder-card {
+  border: 3px solid var(--cia-ink);
+  background: var(--cia-paper);
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.section-li:hover,
+.folder-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--cia-electric);
+}
+
+:is([saved-theme="dark"]) .section-li,
+:is([saved-theme="dark"]) .folder-card {
+  border-color: rgba(248, 248, 236, 0.15);
+}
+
+:is([saved-theme="dark"]) .section-li:hover,
+:is([saved-theme="dark"]) .folder-card:hover {
+  box-shadow: 6px 6px 0 var(--cia-electric);
+}
+
+/* ── BUTTONS & CTAs ── */
+.callout a[href],
+a.internal.tag-link,
+button.search-button {
+  font-family: 'Pixelify Sans', monospace;
+}
+
+/* ── BLOCKQUOTES ── */
+blockquote {
+  border-left: 4px solid var(--cia-gold);
+  background: rgba(201, 169, 97, 0.06);
+  padding: 16px 20px;
+}
+
+:is([saved-theme="dark"]) blockquote {
+  background: rgba(201, 169, 97, 0.08);
+}
+
+/* ── CALLOUTS ── */
+.callout {
+  border: 2px solid var(--cia-mist);
+  background: var(--cia-paper);
+}
+
+:is([saved-theme="dark"]) .callout {
+  border-color: rgba(248, 248, 236, 0.1);
+}
+
+/* ── GRAPH VIEW ── */
+.graph > svg .node > circle {
+  fill: var(--cia-gold);
+}
+
+.graph > svg .node.active > circle {
+  fill: var(--cia-electric);
+}
+
+.graph > svg line {
+  stroke: var(--cia-mist);
+}
+
+:is([saved-theme="dark"]) .graph > svg line {
+  stroke: rgba(248, 248, 236, 0.1);
+}
+
+/* ── SEARCH ── */
+#search-container input {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border: 3px solid var(--cia-mist);
+}
+
+#search-container input:focus {
+  border-color: var(--cia-electric);
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc .depth-1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 2px solid var(--cia-mist);
+  padding: 40px 0;
+}
+
+footer a {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+/* ── CIA FOOTER BRANDING ── */
+footer::after {
+  content: 'A Creative Intelligence Agency wiki';
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ── TAGS ── */
+a.internal.tag-link {
+  background: var(--cia-mist);
+  color: var(--cia-ink);
+  border: 1px solid var(--cia-mist-dark);
+  font-size: 12px;
+  padding: 2px 10px;
+}
+
+:is([saved-theme="dark"]) a.internal.tag-link {
+  background: rgba(248, 248, 236, 0.06);
+  border-color: rgba(248, 248, 236, 0.12);
+  color: var(--cia-paper);
+}
+
+/* ── CHAT BANNER (wikis with RAG backend) ── */
+.chat-banner {
+  background: var(--cia-navy);
+  color: var(--cia-paper);
+  padding: 12px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 2px solid var(--cia-gold);
+}
+
+.chat-banner .label {
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 15px;
+  color: var(--cia-gold);
+}
+
+.chat-banner .description {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+/* ── HOMEPAGE HERO ── */
+.page[data-slug="index"] .article-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.page[data-slug="index"] .content > p:first-of-type {
+  font-size: clamp(18px, 2.5vw, 22px);
+  line-height: 1.5;
+  opacity: 0.6;
+  max-width: 540px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .page-title::before {
+    width: 32px;
+    height: 32px;
+  }
+
+  .section-li,
+  .folder-card {
+    border-width: 2px;
+  }
+}
+
+/* ── INSTALL CTA BLOCK (use in homepage markdown) ── */
+.install-block {
+  background: var(--cia-mist);
+  border: 3px solid var(--cia-ink);
+  padding: 32px;
+  margin: 32px 0;
+  text-align: center;
+}
+
+.install-block code {
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  background: var(--cia-navy);
+  color: var(--cia-gold);
+  padding: 12px 24px;
+  display: inline-block;
+  margin: 16px 0;
+}
+
+:is([saved-theme="dark"]) .install-block {
+  background: rgba(248, 248, 236, 0.04);
+  border-color: rgba(248, 248, 236, 0.15);
+}
+
+/* ── STAT COUNTERS (homepage) ── */
+.stats-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--cia-gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  margin-top: 4px;
+}

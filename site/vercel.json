@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "public",
+  "buildCommand": "npx quartz build",
+  "cleanUrls": true,
+  "trailingSlash": false
+}
